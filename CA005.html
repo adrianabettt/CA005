@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OficinaPRO — Abertura de O.S.</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Courier+Prime:wght@400;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Sistema (lado direito) */
+  --sys-bg:       #0f1117;
+  --sys-panel:    #181c26;
+  --sys-card:     #1e2333;
+  --sys-border:   #2a3048;
+  --sys-accent:   #f5a623;
+  --sys-accent2:  #e8891a;
+  --sys-text:     #e8eaf0;
+  --sys-muted:    #6b7280;
+  --sys-green:    #22c55e;
+  --sys-red:      #ef4444;
+  --sys-input:    #252b3b;
+  --sys-input-bd: #3a4258;
+
+  /* Nota fiscal (lado esquerdo) */
+  --nf-bg:        #fdf8f0;
+  --nf-border:    #c8b99a;
+  --nf-ink:       #1a1410;
+  --nf-ink2:      #5a4a38;
+  --nf-ink3:      #8a7a68;
+  --nf-red:       #8b1a1a;
+  --nf-stamp:     rgba(139,26,26,0.12);
+
+  /* Layout */
+  --r: 8px;
+}
+
+html, body { height: 100%; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #0a0c12;
+  color: var(--sys-text);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ══════════════════════════════
+   TOPBAR DO SISTEMA
+══════════════════════════════ */
+.topbar {
+  background: var(--sys-panel);
+  border-bottom: 1px solid var(--sys-border);
+  padding: 0 20px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+.topbar-dots { display: flex; gap: 5px; }
+.topbar-dots span { width: 10px; height: 10px; border-radius: 50%; }
+.topbar-dots .r { background: #e0605a; }
+.topbar-dots .y { background: #e5c158; }
+.topbar-dots .g { background: #6cc285; }
+.topbar-logo {
+  display: flex; align-items: center; gap: 8px;
+  font-weight: 800; font-size: 14px; color: var(--sys-accent);
+  letter-spacing: .5px; margin-left: 8px;
+}
+.topbar-logo svg { opacity: .9; }
+.topbar-nav {
+  display: flex; gap: 2px; margin-left: 16px;
+}
+.topbar-nav span {
+  font-size: 12px; color: var(--sys-muted); padding: 4px 12px;
+  border-radius: 4px; cursor: default;
+}
+.topbar-nav span.active {
+  background: rgba(245,166,35,.12);
+  color: var(--sys-accent);
+  font-weight: 600;
+}
+.topbar-right {
+  margin-left: auto; display: flex; align-items: center; gap: 12px;
+}
+.topbar-user {
+  font-size: 12px; color: var(--sys-muted);
+  display: flex; align-items: center; gap: 6px;
+}
+.topbar-user .avatar {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: linear-gradient(135deg, #f5a623, #e8691a);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #fff;
+}
+
+/* ══════════════════════════════
+   LAYOUT PRINCIPAL
+══════════════════════════════ */
+.app {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* ══════════════════════════════
+   TELA START
+══════════════════════════════ */
+#screen-start {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+.start-card {
+  background: var(--sys-card);
+  border: 1px solid var(--sys-border);
+  border-radius: 16px;
+  padding: 40px 44px;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+}
+.start-icon {
+  width: 64px; height: 64px; border-radius: 16px;
+  background: linear-gradient(135deg, #f5a623 0%, #e8691a 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; margin: 0 auto 20px;
+  box-shadow: 0 8px 24px rgba(245,166,35,.3);
+}
+.start-card h1 { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+.start-card p  { font-size: 13.5px; color: var(--sys-muted); line-height: 1.6; margin-bottom: 28px; }
+.start-briefing {
+  background: rgba(245,166,35,.08);
+  border: 1px solid rgba(245,166,35,.2);
+  border-radius: var(--r);
+  padding: 14px 16px;
+  font-size: 13px; color: #c8a060; line-height: 1.7;
+  text-align: left; margin-bottom: 24px;
+}
+.start-briefing strong { color: var(--sys-accent); }
+.start-input {
+  width: 100%; height: 46px;
+  background: var(--sys-input); border: 1.5px solid var(--sys-input-bd);
+  border-radius: var(--r); padding: 0 14px;
+  font-size: 14px; font-family: 'Inter', sans-serif;
+  color: var(--sys-text); outline: none; margin-bottom: 14px;
+  transition: border-color .15s, box-shadow .15s;
+}
+.start-input:focus { border-color: var(--sys-accent); box-shadow: 0 0 0 3px rgba(245,166,35,.15); }
+.start-input::placeholder { color: var(--sys-muted); }
+.btn-start {
+  width: 100%; height: 48px;
+  background: linear-gradient(135deg, #f5a623, #d4620e);
+  border: none; border-radius: var(--r);
+  font-size: 15px; font-weight: 700; font-family: 'Inter', sans-serif;
+  color: #fff; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: opacity .15s, transform .1s;
+  box-shadow: 0 4px 16px rgba(245,166,35,.3);
+}
+.btn-start:hover { opacity: .9; }
+.btn-start:active { transform: scale(.99); }
+.btn-start:disabled { opacity: .35; cursor: not-allowed; }
+
+/* ══════════════════════════════
+   TELA DE TRABALHO — SPLIT
+══════════════════════════════ */
+#screen-trabalho {
+  flex: 1;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.work-statusbar {
+  background: var(--sys-panel);
+  border-bottom: 1px solid var(--sys-border);
+  padding: 8px 20px;
+  display: flex; align-items: center; gap: 16px;
+  flex-shrink: 0;
+}
+.work-statusbar .os-badge {
+  background: rgba(245,166,35,.15);
+  border: 1px solid rgba(245,166,35,.3);
+  color: var(--sys-accent);
+  font-size: 11px; font-weight: 700;
+  padding: 3px 10px; border-radius: 4px;
+  letter-spacing: .3px;
+}
+.work-statusbar .progress-dots { display: flex; gap: 5px; }
+.work-statusbar .pdot {
+  width: 28px; height: 5px; border-radius: 3px;
+  background: var(--sys-border);
+}
+.work-statusbar .pdot.done { background: var(--sys-green); }
+.work-statusbar .pdot.now  { background: var(--sys-accent); }
+
+.pills { display: flex; gap: 8px; margin-left: auto; }
+.pill {
+  font-size: 11.5px; font-weight: 700;
+  padding: 3px 10px; border-radius: 999px; border: 1px solid;
+  display: flex; align-items: center; gap: 4px;
+}
+.pill-prec  { background: rgba(34,197,94,.1); border-color: rgba(34,197,94,.3); color: #4ade80; }
+.pill-erros { background: rgba(239,68,68,.1);  border-color: rgba(239,68,68,.3);  color: #f87171; }
+.pill-nota  { background: rgba(245,166,35,.1); border-color: rgba(245,166,35,.3); color: var(--sys-accent); }
+
+/* Split principal */
+.split {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+}
+
+/* ──────── LADO ESQUERDO: NOTA FISCAL ──────── */
+.nf-pane {
+  background: #2a2520;
+  border-right: 1px solid #3a3028;
+  overflow-y: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 20px;
+}
+
+.nota-fiscal {
+  background: var(--nf-bg);
+  border: 1.5px solid var(--nf-border);
+  border-radius: 4px;
+  width: 100%;
+  max-width: 420px;
+  font-family: 'Courier Prime', 'Courier New', monospace;
+  color: var(--nf-ink);
+  position: relative;
+  box-shadow: 0 4px 24px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.05);
+  overflow: hidden;
+}
+
+/* textura de papel */
+.nota-fiscal::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='4' height='4' viewBox='0 0 4 4' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h1v1H0z' fill='%23c8b99a' fill-opacity='0.06'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0;
+}
+
+.nf-content { position: relative; z-index: 1; padding: 20px 22px 22px; }
+
+/* cabeçalho da nota */
+.nf-header {
+  border-bottom: 2px solid var(--nf-ink);
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+}
+.nf-oficina-nome {
+  font-size: 17px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1px;
+  color: var(--nf-red);
+}
+.nf-oficina-info {
+  font-size: 10.5px; color: var(--nf-ink2); line-height: 1.5;
+  margin-top: 2px;
+}
+.nf-doc-row {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  margin-top: 10px;
+}
+.nf-doc-titulo {
+  font-size: 13px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1.5px;
+  color: var(--nf-ink);
+  border: 1.5px solid var(--nf-ink);
+  padding: 3px 10px;
+}
+.nf-doc-num {
+  font-size: 11px; color: var(--nf-ink2);
+  text-align: right;
+}
+.nf-doc-num strong { font-size: 14px; color: var(--nf-ink); display: block; }
+
+/* stamp */
+.nf-stamp {
+  position: absolute;
+  top: 18px; right: 18px;
+  width: 72px; height: 72px;
+  border: 3px solid var(--nf-red);
+  border-radius: 50%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  opacity: .18;
+  transform: rotate(-15deg);
+  pointer-events: none;
+}
+.nf-stamp span { font-size: 8px; font-weight: 700; color: var(--nf-red); text-transform: uppercase; letter-spacing: .5px; line-height: 1.3; text-align: center; }
+
+/* seções da nota */
+.nf-secao {
+  margin-bottom: 14px;
+}
+.nf-secao-titulo {
+  font-size: 9px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1px;
+  color: var(--nf-ink3);
+  border-bottom: 1px solid var(--nf-border);
+  padding-bottom: 3px; margin-bottom: 8px;
+}
+.nf-linha {
+  display: flex; gap: 8px;
+  margin-bottom: 6px;
+}
+.nf-campo {
+  flex: 1;
+}
+.nf-campo-lbl {
+  font-size: 8.5px; text-transform: uppercase;
+  letter-spacing: .8px; color: var(--nf-ink3);
+  margin-bottom: 2px;
+}
+.nf-campo-val {
+  font-size: 13px; font-weight: 700;
+  color: var(--nf-ink);
+  border-bottom: 1px solid var(--nf-border);
+  padding-bottom: 2px;
+  min-height: 20px;
+}
+.nf-campo-val.destaque { color: var(--nf-red); font-size: 14px; }
+
+/* rodapé da nota */
+.nf-footer {
+  border-top: 1px dashed var(--nf-border);
+  padding-top: 10px;
+  margin-top: 4px;
+  font-size: 9px; color: var(--nf-ink3);
+  line-height: 1.6;
+  text-align: center;
+}
+.nf-assinatura {
+  display: flex; justify-content: space-between;
+  margin-top: 18px;
+}
+.nf-assin-campo {
+  flex: 1; text-align: center;
+}
+.nf-assin-linha {
+  border-top: 1px solid var(--nf-ink3);
+  padding-top: 4px;
+  font-size: 8.5px; color: var(--nf-ink3); text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+/* ──────── LADO DIREITO: SISTEMA ──────── */
+.sys-pane {
+  background: var(--sys-bg);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.sys-inner {
+  padding: 20px;
+  flex: 1;
+}
+
+.sys-titulo {
+  font-size: 13px; font-weight: 700;
+  color: var(--sys-muted);
+  text-transform: uppercase; letter-spacing: .8px;
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.sys-titulo::before {
+  content: '';
+  display: inline-block;
+  width: 3px; height: 14px;
+  background: var(--sys-accent);
+  border-radius: 2px;
+}
+
+.form-row { display: grid; gap: 10px; margin-bottom: 10px; }
+.form-row.col2 { grid-template-columns: 1fr 1fr; }
+.form-row.col3 { grid-template-columns: 1fr 1fr 1fr; }
+.form-row.col1 { grid-template-columns: 1fr; }
+
+.campo {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.campo label {
+  font-size: 10.5px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .6px;
+  color: var(--sys-muted);
+  display: flex; align-items: center; gap: 5px;
+}
+.campo label .req { color: var(--sys-accent); font-size: 13px; line-height: 1; }
+.campo label .sicon { font-size: 11px; margin-left: auto; }
+
+.campo input,
+.campo select {
+  height: 38px;
+  background: var(--sys-input);
+  border: 1.5px solid var(--sys-input-bd);
+  border-radius: 6px;
+  padding: 0 12px;
+  font-size: 13.5px;
+  font-family: 'Inter', sans-serif;
+  color: var(--sys-text);
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+  width: 100%;
+}
+.campo input::placeholder { color: var(--sys-muted); font-size: 12px; }
+.campo input:focus,
+.campo select:focus {
+  border-color: var(--sys-accent);
+  box-shadow: 0 0 0 3px rgba(245,166,35,.12);
+}
+.campo input.ok   { border-color: var(--sys-green); background: rgba(34,197,94,.06); }
+.campo input.bad  { border-color: var(--sys-red);   background: rgba(239,68,68,.06); }
+.campo select.ok  { border-color: var(--sys-green); background: rgba(34,197,94,.06); }
+.campo select.bad { border-color: var(--sys-red);   background: rgba(239,68,68,.06); }
+.campo input:disabled,
+.campo select:disabled { opacity: .55; cursor: default; }
+
+.campo select option { background: #252b3b; }
+
+.sys-divider {
+  border: none; border-top: 1px solid var(--sys-border);
+  margin: 14px 0;
+}
+
+.btn-salvar {
+  width: 100%; height: 46px;
+  background: linear-gradient(135deg, #f5a623, #d4620e);
+  border: none; border-radius: var(--r);
+  font-size: 14px; font-weight: 700; font-family: 'Inter', sans-serif;
+  color: #fff; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: opacity .15s, transform .1s;
+  box-shadow: 0 4px 16px rgba(245,166,35,.25);
+  margin-top: 14px;
+}
+.btn-salvar:hover { opacity: .9; }
+.btn-salvar:active { transform: scale(.99); }
+
+/* mini estatísticas */
+.mini-stats {
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 8px;
+  margin-bottom: 14px;
+}
+.ms {
+  background: var(--sys-card);
+  border: 1px solid var(--sys-border);
+  border-radius: var(--r);
+  padding: 8px 6px; text-align: center;
+}
+.ms-n { font-size: 18px; font-weight: 700; color: var(--sys-text); display: block; }
+.ms-l { font-size: 9px; color: var(--sys-muted); text-transform: uppercase; letter-spacing: .5px; }
+
+/* ══════════════════════════════
+   TELA RESULTADO
+══════════════════════════════ */
+#screen-resultado {
+  flex: 1;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  overflow-y: auto;
+}
+.result-wrap { max-width: 560px; width: 100%; }
+.result-card {
+  background: var(--sys-card);
+  border: 1px solid var(--sys-border);
+  border-radius: 16px;
+  padding: 36px 40px;
+  text-align: center;
+}
+.result-card h2 { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+.result-aluno { font-size: 13px; color: var(--sys-muted); margin-bottom: 28px; font-style: italic; }
+.nota-big { font-size: 80px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
+.nota-conceito { font-size: 15px; font-weight: 600; margin-bottom: 28px; }
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; text-align: left; }
+.db {
+  background: var(--sys-panel);
+  border: 1px solid var(--sys-border);
+  border-radius: var(--r);
+  padding: 14px 16px;
+}
+.db-n { font-size: 26px; font-weight: 700; display: block; margin-bottom: 2px; }
+.db-l { font-size: 10.5px; color: var(--sys-muted); text-transform: uppercase; letter-spacing: .5px; }
+.db-s { font-size: 11.5px; color: var(--sys-muted); margin-top: 3px; }
+.os-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-bottom: 18px; text-align: left; }
+.os-table th { font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: var(--sys-muted); padding: 6px 8px; border-bottom: 1px solid var(--sys-border); }
+.os-table td { padding: 7px 8px; border-bottom: 1px solid var(--sys-border); }
+.score-box {
+  background: rgba(245,166,35,.07);
+  border: 1px solid rgba(245,166,35,.2);
+  border-radius: var(--r);
+  padding: 14px 16px;
+  font-size: 12.5px; color: #c8a060; line-height: 1.9; text-align: left;
+  margin-bottom: 20px;
+}
+.score-box strong { color: var(--sys-accent); }
+.btn-print {
+  width: 100%; height: 44px;
+  background: var(--sys-card); border: 1px solid var(--sys-border);
+  border-radius: var(--r); font-size: 13.5px; font-weight: 600;
+  font-family: 'Inter', sans-serif; color: var(--sys-text); cursor: pointer;
+  margin-bottom: 8px; transition: background .15s;
+}
+.btn-print:hover { background: var(--sys-input); }
+.btn-restart {
+  width: 100%; height: 44px;
+  background: linear-gradient(135deg, #f5a623, #d4620e);
+  border: none; border-radius: var(--r);
+  font-size: 13.5px; font-weight: 700; font-family: 'Inter', sans-serif;
+  color: #fff; cursor: pointer; transition: opacity .15s;
+}
+.btn-restart:hover { opacity: .9; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #2a3048; border-radius: 3px; }
+
+@media (max-width: 800px) {
+  .split { grid-template-columns: 1fr; }
+  .nf-pane { border-right: none; border-bottom: 1px solid #3a3028; }
+}
+
+@media print {
+  body { background: #fff; }
+  .topbar, #screen-start, #screen-trabalho { display: none !important; }
+  #screen-resultado { display: flex !important; background: #fff; }
+  .result-card { border: 1px solid #ddd; color: #000; background: #fff; }
+  .btn-print, .btn-restart { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-dots">
+    <span class="r"></span><span class="y"></span><span class="g"></span>
+  </div>
+  <div class="topbar-logo">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+    OficinaPRO
+  </div>
+  <div class="topbar-nav">
+    <span>Dashboard</span>
+    <span class="active">Ordem de Serviço</span>
+    <span>Clientes</span>
+    <span>Relatórios</span>
+  </div>
+  <div class="topbar-right">
+    <div class="topbar-user">
+      <div class="avatar" id="topbar-avatar">?</div>
+      <span id="topbar-nome">—</span>
+    </div>
+  </div>
+</div>
+
+<div class="app">
+
+<!-- ══════ TELA START ══════ -->
+<div id="screen-start">
+  <div class="start-card">
+    <div class="start-icon">🔧</div>
+    <h1>Abertura de Ordem de Serviço</h1>
+    <p>Você vai receber fichas de clientes da oficina e precisa digitá-las no sistema exatamente como aparecem.</p>
+    <div class="start-briefing">
+      🔧 <strong>Sua tarefa:</strong> você é o(a) auxiliar administrativo(a) da <strong>Oficina Mecânica Turbo Auto</strong>. Três clientes chegaram hoje. Você vai ver a ficha preenchida na recepção <strong>à esquerda</strong> e precisa digitar os dados no sistema <strong>à direita</strong>.
+</p> Em uma oficina real, errar a placa ou o serviço a ser prestado pode causar grandes problemas. ATENÇÃO!!
+    </div>
+    <input class="start-input" id="input-nome" type="text" placeholder="Digite seu nome completo…" autocomplete="off">
+    <button class="btn-start" id="btn-start" disabled>
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      Começar expediente
+    </button>
+  </div>
+</div>
+
+<!-- ══════ TELA DE TRABALHO ══════ -->
+<div id="screen-trabalho">
+
+  <!-- status bar -->
+  <div class="work-statusbar">
+    <div class="os-badge" id="os-badge">O.S. 1 / 3</div>
+    <div class="progress-dots" id="pdots"></div>
+    <div class="pills">
+      <div class="pill pill-prec">Precisão: <span id="pill-prec">100%</span></div>
+      <div class="pill pill-erros">Erros: <span id="pill-erros">0</span></div>
+      <div class="pill pill-nota">Nota: <span id="pill-nota">10,0</span></div>
+    </div>
+  </div>
+
+  <!-- split -->
+  <div class="split">
+
+    <!-- NOTA FISCAL -->
+    <div class="nf-pane">
+      <div class="nota-fiscal">
+        <div class="nf-stamp">
+          <span>Turbo<br>Auto<br>Mecânica</span>
+        </div>
+        <div class="nf-content">
+          <!-- cabeçalho -->
+          <div class="nf-header">
+            <div class="nf-oficina-nome">Turbo Auto Mecânica</div>
+            <div class="nf-oficina-info">
+              Rua das Ferramentas, 482 — Bairro Industrial — Chapecó/SC<br>
+              CNPJ: 12.345.678/0001-90 &nbsp;|&nbsp; Fone: (49) 3322-0001
+            </div>
+            <div class="nf-doc-row">
+              <div class="nf-doc-titulo">Ordem de Serviço</div>
+              <div class="nf-doc-num">
+                Data: <span id="nf-data">—</span>
+                <strong id="nf-numero">N.º 0000</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- dados do cliente -->
+          <div class="nf-secao">
+            <div class="nf-secao-titulo">Dados do cliente</div>
+            <div class="nf-linha">
+              <div class="nf-campo" style="flex:2">
+                <div class="nf-campo-lbl">Nome completo</div>
+                <div class="nf-campo-val" id="nf-cliente">—</div>
+              </div>
+            </div>
+            <div class="nf-linha">
+              <div class="nf-campo">
+                <div class="nf-campo-lbl">Telefone</div>
+                <div class="nf-campo-val" id="nf-tel">—</div>
+              </div>
+              <div class="nf-campo">
+                <div class="nf-campo-lbl">CPF</div>
+                <div class="nf-campo-val" id="nf-cpf">—</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- dados do veículo -->
+          <div class="nf-secao">
+            <div class="nf-secao-titulo">Dados do veículo</div>
+            <div class="nf-linha">
+              <div class="nf-campo" style="flex:2">
+                <div class="nf-campo-lbl">Veículo (marca e modelo)</div>
+                <div class="nf-campo-val destaque" id="nf-veiculo">—</div>
+              </div>
+              <div class="nf-campo">
+                <div class="nf-campo-lbl">Ano</div>
+                <div class="nf-campo-val" id="nf-ano">—</div>
+              </div>
+            </div>
+            <div class="nf-linha">
+              <div class="nf-campo">
+                <div class="nf-campo-lbl">Placa</div>
+                <div class="nf-campo-val destaque" id="nf-placa">—</div>
+              </div>
+              <div class="nf-campo">
+                <div class="nf-campo-lbl">Quilometragem</div>
+                <div class="nf-campo-val" id="nf-km">—</div>
+              </div>
+              <div class="nf-campo">
+                <div class="nf-campo-lbl">Cor</div>
+                <div class="nf-campo-val" id="nf-cor">—</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- serviço -->
+          <div class="nf-secao">
+            <div class="nf-secao-titulo">Serviço solicitado</div>
+            <div class="nf-linha">
+              <div class="nf-campo">
+                <div class="nf-campo-lbl">Tipo de serviço</div>
+                <div class="nf-campo-val destaque" id="nf-servico">—</div>
+              </div>
+            </div>
+            <div class="nf-linha">
+              <div class="nf-campo">
+                <div class="nf-campo-lbl">Observações / relato do cliente</div>
+                <div class="nf-campo-val" id="nf-obs" style="font-size:12px; min-height:32px">—</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- assinaturas -->
+          <div class="nf-assinatura">
+            <div class="nf-assin-campo">
+              <div class="nf-assin-linha">Recepcionista</div>
+            </div>
+            <div style="width:20px"></div>
+            <div class="nf-assin-campo">
+              <div class="nf-assin-linha">Cliente</div>
+            </div>
+          </div>
+
+          <div class="nf-footer">
+            Via do sistema — documento sem valor fiscal<br>
+            Turbo Auto Mecânica © 2026
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SISTEMA -->
+    <div class="sys-pane">
+      <div class="sys-inner">
+
+        <div class="mini-stats">
+          <div class="ms"><span class="ms-n" id="ms-ok">0</span><span class="ms-l">corretos</span></div>
+          <div class="ms"><span class="ms-n" id="ms-tot">0</span><span class="ms-l">total</span></div>
+          <div class="ms"><span class="ms-n" id="ms-err" style="color:var(--sys-red)">0</span><span class="ms-l">erros</span></div>
+          <div class="ms"><span class="ms-n" id="ms-os">0/3</span><span class="ms-l">O.S.</span></div>
+        </div>
+
+        <div class="sys-titulo">Nova Ordem de Serviço</div>
+
+        <div id="form-campos"></div>
+
+        <button class="btn-salvar" id="btn-salvar">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Registrar O.S. no Sistema
+        </button>
+
+      </div>
+    </div>
+
+  </div><!-- /split -->
+</div><!-- /screen-trabalho -->
+
+<!-- ══════ TELA RESULTADO ══════ -->
+<div id="screen-resultado">
+  <div class="result-wrap">
+    <div class="result-card">
+      <h2>Expediente Concluído</h2>
+      <p class="result-aluno" id="res-aluno"></p>
+      <div class="nota-big" id="res-nota">—</div>
+      <div class="nota-conceito" id="res-conceito"></div>
+      <div class="detail-grid">
+        <div class="db"><span class="db-n" id="rd-ok" style="color:var(--sys-green)">0</span><span class="db-l">Caracteres corretos</span><div class="db-s" id="rd-ok-sub"></div></div>
+        <div class="db"><span class="db-n" id="rd-prec">—</span><span class="db-l">Precisão final</span><div class="db-s">nas 3 ordens de serviço</div></div>
+        <div class="db"><span class="db-n" id="rd-err" style="color:var(--sys-red)">0</span><span class="db-l">Erros cometidos</span><div class="db-s" id="rd-err-sub"></div></div>
+        <div class="db"><span class="db-n" id="rd-os">3</span><span class="db-l">O.S. registradas</span><div class="db-s">expediente fechado</div></div>
+      </div>
+      <table class="os-table">
+        <thead><tr><th>Cliente / Veículo</th><th>Precisão</th><th>Erros</th></tr></thead>
+        <tbody id="os-tbody"></tbody>
+      </table>
+      <div class="score-box" id="score-box"></div>
+      <button class="btn-print" onclick="window.print()">🖨️ Imprimir resultado</button>
+      <button class="btn-restart" id="btn-restart">🔁 Novo expediente</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /app -->
+
+<script>
+// ══════ CONFIG ══════
+const ERROS_LIVRES_POR_FICHA = 3;
+const DESCONTO_POR_ERRO      = 0.12;
+const DESCONTO_MAXIMO        = 5.0;
+
+// ══════ FICHAS ══════
+const FICHAS = [
+  {
+    num: '0341',
+    nf: { cliente:'Roberto Antunes da Silva', tel:'(49) 99801-3344', cpf:'045.821.367-90',
+          veiculo:'Fiat Strada', ano:'2019', placa:'BKT-4821', km:'87.450', cor:'Prata',
+          servico:'Troca de óleo e filtro', obs:'Verificar também o nível dos demais fluidos (arrefecimento, freio e direção hidráulica) e as condições gerais dos filtros de ar e de cabine.' },
+    campos: [
+      { key:'cliente',  lbl:'Nome do cliente',       col:'col1', valor:'Roberto Antunes da Silva', type:'text', ph:'Nome completo' },
+      { key:'tel',      lbl:'Telefone',               col:'col2a',valor:'(49) 99801-3344',          type:'text', ph:'(XX) XXXXX-XXXX' },
+      { key:'cpf',      lbl:'CPF',                    col:'col2b',valor:'045.821.367-90',            type:'text', ph:'000.000.000-00' },
+      { key:'veiculo',  lbl:'Veículo (marca/modelo)', col:'col2a',valor:'Fiat Strada',               type:'text', ph:'Marca Modelo' },
+      { key:'ano',      lbl:'Ano',                    col:'col2b',valor:'2019',                      type:'text', ph:'AAAA' },
+      { key:'placa',    lbl:'Placa',                  col:'col3a',valor:'BKT-4821',                  type:'text', ph:'XXX-0000' },
+      { key:'km',       lbl:'Quilometragem',          col:'col3b',valor:'87.450',                    type:'text', ph:'00.000' },
+      { key:'cor',      lbl:'Cor',                    col:'col3c',valor:'Prata',                     type:'text', ph:'Cor' },
+      { key:'servico',  lbl:'Serviço solicitado',     col:'col1', valor:'Troca de óleo e filtro',    type:'select',
+        opcoes:['','Troca de óleo e filtro','Revisão completa','Alinhamento e balanceamento','Troca de pastilha de freio','Diagnóstico elétrico','Troca de correia dentada'] },
+      { key:'obs',      lbl:'Observações',            col:'col1', valor:'Verificar também o nível dos demais fluidos (arrefecimento, freio e direção hidráulica) e as condições gerais dos filtros de ar e de cabine.', type:'text', ph:'Relato do cliente' },
+    ]
+  },
+  {
+    num: '0342',
+    nf: { cliente:'Fernanda Lopes Cardoso', tel:'(49) 98765-1122', cpf:'312.456.789-11',
+          veiculo:'Volkswagen Gol', ano:'2015', placa:'RCM-2077', km:'112.300', cor:'Branco',
+          servico:'Alinhamento e balanceamento', obs:'Cliente relata que o volante apresenta trepidação/vibração perceptível quando o veículo atinge velocidades acima de 80 km/h. Solicita balanceamento das rodas.' },
+    campos: [
+      { key:'cliente',  lbl:'Nome do cliente',       col:'col1', valor:'Fernanda Lopes Cardoso',    type:'text', ph:'Nome completo' },
+      { key:'tel',      lbl:'Telefone',               col:'col2a',valor:'(49) 98765-1122',           type:'text', ph:'(XX) XXXXX-XXXX' },
+      { key:'cpf',      lbl:'CPF',                    col:'col2b',valor:'312.456.789-11',             type:'text', ph:'000.000.000-00' },
+      { key:'veiculo',  lbl:'Veículo (marca/modelo)', col:'col2a',valor:'Volkswagen Gol',             type:'text', ph:'Marca Modelo' },
+      { key:'ano',      lbl:'Ano',                    col:'col2b',valor:'2015',                       type:'text', ph:'AAAA' },
+      { key:'placa',    lbl:'Placa',                  col:'col3a',valor:'RCM-2077',                   type:'text', ph:'XXX-0000' },
+      { key:'km',       lbl:'Quilometragem',          col:'col3b',valor:'112.300',                    type:'text', ph:'00.000' },
+      { key:'cor',      lbl:'Cor',                    col:'col3c',valor:'Branco',                     type:'text', ph:'Cor' },
+      { key:'servico',  lbl:'Serviço solicitado',     col:'col1', valor:'Alinhamento e balanceamento', type:'select',
+        opcoes:['','Troca de óleo e filtro','Revisão completa','Alinhamento e balanceamento','Troca de pastilha de freio','Diagnóstico elétrico','Troca de correia dentada'] },
+      { key:'obs',      lbl:'Observações',            col:'col1', valor:'Cliente relata que o volante apresenta trepidação/vibração perceptível quando o veículo atinge velocidades acima de 80 km/h. Solicita balanceamento das rodas.', type:'text', ph:'Relato do cliente' },
+    ]
+  },
+  {
+    num: '0343',
+    nf: { cliente:'Marcos Paulo Oliveira', tel:'(49) 3322-8899', cpf:'098.765.432-10',
+          veiculo:'Chevrolet S10', ano:'2021', placa:'QAZ-9934', km:'43.700', cor:'Preto',
+          servico:'Revisão completa', obs:'Cliente relata que utiliza o veículo frequentemente em estradas de terra e começou a notar um pequeno estalo/ruído na suspensão dianteira ao passar por irregularidades. Solicita revisão completa com inspeção detalhada de buchas, pivôs, amortecedores e reaperto geral do chassi.' },
+    campos: [
+      { key:'cliente',  lbl:'Nome do cliente',       col:'col1', valor:'Marcos Paulo Oliveira',      type:'text', ph:'Nome completo' },
+      { key:'tel',      lbl:'Telefone',               col:'col2a',valor:'(49) 3322-8899',             type:'text', ph:'(XX) XXXXX-XXXX' },
+      { key:'cpf',      lbl:'CPF',                    col:'col2b',valor:'098.765.432-10',              type:'text', ph:'000.000.000-00' },
+      { key:'veiculo',  lbl:'Veículo (marca/modelo)', col:'col2a',valor:'Chevrolet S10',               type:'text', ph:'Marca Modelo' },
+      { key:'ano',      lbl:'Ano',                    col:'col2b',valor:'2021',                        type:'text', ph:'AAAA' },
+      { key:'placa',    lbl:'Placa',                  col:'col3a',valor:'QAZ-9934',                    type:'text', ph:'XXX-0000' },
+      { key:'km',       lbl:'Quilometragem',          col:'col3b',valor:'43.700',                      type:'text', ph:'00.000' },
+      { key:'cor',      lbl:'Cor',                    col:'col3c',valor:'Preto',                       type:'text', ph:'Cor' },
+      { key:'servico',  lbl:'Serviço solicitado',     col:'col1', valor:'Revisão completa',            type:'select',
+        opcoes:['','Troca de óleo e filtro','Revisão completa','Alinhamento e balanceamento','Troca de pastilha de freio','Diagnóstico elétrico','Troca de correia dentada'] },
+      { key:'obs',      lbl:'Observações',            col:'col1', valor:'Cliente relata que utiliza o veículo frequentemente em estradas de terra e começou a notar um pequeno estalo/ruído na suspensão dianteira ao passar por irregularidades. Solicita revisão completa com inspeção detalhada de buchas, pivôs, amortecedores e reaperto geral do chassi.', type:'text', ph:'Relato do cliente' },
+    ]
+  }
+];
+
+const TOTAL_CHARS = FICHAS.reduce((s,f)=>
+  s + f.campos.reduce((s2,c)=> s2 + (c.type==='text' ? c.valor.length : 0), 0), 0);
+const ERROS_LIVRES_TOTAL = ERROS_LIVRES_POR_FICHA * FICHAS.length;
+
+let alunoNome='', fichaAtual=0, errosCometidos=0, prevValues={}, resultados=[], errosAnteriores=0;
+
+// ══════ START ══════
+document.getElementById('input-nome').addEventListener('input', function(){
+  document.getElementById('btn-start').disabled = !this.value.trim();
+});
+document.getElementById('btn-start').onclick = function(){
+  const nome = document.getElementById('input-nome').value.trim();
+  if(!nome) return;
+  alunoNome = nome;
+  document.getElementById('topbar-nome').textContent = nome.split(' ')[0];
+  document.getElementById('topbar-avatar').textContent = nome[0].toUpperCase();
+  fichaAtual=0; errosCometidos=0; resultados=[];
+  show('screen-trabalho');
+  renderFicha();
+};
+
+function show(id){
+  document.getElementById('screen-start').style.display     = id==='screen-start'     ? 'flex' : 'none';
+  document.getElementById('screen-trabalho').style.display  = id==='screen-trabalho'  ? 'flex' : 'none';
+  document.getElementById('screen-resultado').style.display = id==='screen-resultado' ? 'flex' : 'none';
+}
+
+// ══════ RENDER FICHA ══════
+function renderFicha(){
+  const f = FICHAS[fichaAtual];
+  const hoje = new Date().toLocaleDateString('pt-BR');
+
+  // atualiza nota fiscal
+  document.getElementById('nf-numero').textContent = 'N.º ' + f.num;
+  document.getElementById('nf-data').textContent = hoje;
+  document.getElementById('nf-cliente').textContent = f.nf.cliente;
+  document.getElementById('nf-tel').textContent     = f.nf.tel;
+  document.getElementById('nf-cpf').textContent     = f.nf.cpf;
+  document.getElementById('nf-veiculo').textContent = f.nf.veiculo;
+  document.getElementById('nf-ano').textContent     = f.nf.ano;
+  document.getElementById('nf-placa').textContent   = f.nf.placa;
+  document.getElementById('nf-km').textContent      = f.nf.km + ' km';
+  document.getElementById('nf-cor').textContent     = f.nf.cor;
+  document.getElementById('nf-servico').textContent = f.nf.servico;
+  document.getElementById('nf-obs').textContent     = f.nf.obs;
+
+  // progress dots
+  const pd = document.getElementById('pdots');
+  pd.innerHTML = '';
+  FICHAS.forEach((_,i)=>{
+    const d = document.createElement('div');
+    d.className = 'pdot' + (i<fichaAtual?' done':i===fichaAtual?' now':'');
+    pd.appendChild(d);
+  });
+  document.getElementById('os-badge').textContent = 'O.S. ' + (fichaAtual+1) + ' / ' + FICHAS.length;
+
+  // monta form por grupos de colunas
+  // agrupa: col1 = linha inteira, col2a+col2b = linha de 2, col3a+col3b+col3c = linha de 3
+  const grupos = [];
+  let i = 0;
+  while(i < f.campos.length){
+    const c = f.campos[i];
+    if(c.col === 'col1'){ grupos.push([c]); i++; }
+    else if(c.col === 'col2a'){ grupos.push([c, f.campos[i+1]]); i+=2; }
+    else if(c.col === 'col3a'){ grupos.push([c, f.campos[i+1], f.campos[i+2]]); i+=3; }
+    else { grupos.push([c]); i++; }
+  }
+
+  document.getElementById('form-campos').innerHTML = grupos.map(g => {
+    const cls = g.length===1?'col1':g.length===2?'col2':'col3';
+    return `<div class="form-row ${cls}">` + g.map(c => {
+      if(c.type==='select'){
+        const opts = c.opcoes.map(o=>`<option value="${o}">${o||'— Selecione —'}</option>`).join('');
+        return `<div class="campo">
+          <label>${c.lbl} <span class="req">*</span><span class="sicon" id="icon-${c.key}"></span></label>
+          <select id="campo-${c.key}" data-key="${c.key}">${opts}</select>
+        </div>`;
+      }
+      return `<div class="campo">
+        <label>${c.lbl} <span class="req">*</span><span class="sicon" id="icon-${c.key}"></span></label>
+        <input type="text" id="campo-${c.key}" data-key="${c.key}" placeholder="${c.ph}"
+          autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      </div>`;
+    }).join('') + '</div>';
+  }).join('');
+
+  prevValues = {};
+  f.campos.forEach(c => {
+    prevValues[c.key] = '';
+    const el = document.getElementById('campo-'+c.key);
+    if(c.type==='text'){
+      el.addEventListener('input', onInput);
+      el.addEventListener('paste', e=>e.preventDefault());
+    } else {
+      el.addEventListener('change', onSelect);
+    }
+  });
+
+  errosAnteriores = errosCometidos;
+  document.getElementById('ms-os').textContent = fichaAtual+'/'+FICHAS.length;
+  atualizarStats();
+  const first = document.querySelector('#form-campos input, #form-campos select');
+  if(first) first.focus();
+}
+
+// ══════ INPUT TEXTO ══════
+function onInput(e){
+  const key = e.target.dataset.key;
+  const campo = FICHAS[fichaAtual].campos.find(c=>c.key===key);
+  const target = campo.valor, val = e.target.value, prev = prevValues[key]||'';
+  if(val.length > prev.length){
+    for(let i=prev.length;i<val.length;i++){
+      if(i<target.length && val[i]!==target[i]) errosCometidos++;
+    }
+  }
+  prevValues[key] = val;
+  const ok = val.length>0 && target.slice(0,val.length)===val;
+  const icon = document.getElementById('icon-'+key);
+  e.target.classList.remove('ok','bad');
+  if(!val.length) icon.textContent='';
+  else if(ok){ icon.textContent='✓'; e.target.classList.add('ok'); }
+  else { icon.textContent='✗'; e.target.classList.add('bad'); }
+  atualizarStats();
+}
+
+// ══════ SELECT ══════
+function onSelect(e){
+  const key = e.target.dataset.key;
+  const campo = FICHAS[fichaAtual].campos.find(c=>c.key===key);
+  const val = e.target.value;
+  const icon = document.getElementById('icon-'+key);
+  e.target.classList.remove('ok','bad');
+  if(!val) icon.textContent='';
+  else if(val===campo.valor){ icon.textContent='✓'; e.target.classList.add('ok'); }
+  else { icon.textContent='✗'; e.target.classList.add('bad'); errosCometidos++; }
+  atualizarStats();
+}
+
+// ══════ STATS ══════
+function atualizarStats(){
+  const f = FICHAS[fichaAtual];
+  let okF=0, totF=0, typedF=0;
+  f.campos.forEach(c=>{
+    if(c.type!=='text') return;
+    const val=(document.getElementById('campo-'+c.key)||{}).value||'';
+    for(let i=0;i<Math.min(val.length,c.valor.length);i++) if(val[i]===c.valor[i]) okF++;
+    totF+=c.valor.length; typedF+=val.length;
+  });
+  const okAnt = resultados.reduce((s,r)=>s+r.ok,0);
+  const precPct = typedF>0 ? Math.round((okF/Math.min(typedF,totF))*100) : 100;
+  const {notaFinal} = calcNota(okAnt+okF, TOTAL_CHARS, errosCometidos);
+  document.getElementById('pill-prec').textContent = precPct+'%';
+  document.getElementById('pill-erros').textContent = errosCometidos;
+  document.getElementById('pill-nota').textContent = notaFinal.toFixed(1).replace('.',',');
+  document.getElementById('ms-ok').textContent = okAnt+okF;
+  document.getElementById('ms-tot').textContent = TOTAL_CHARS;
+  document.getElementById('ms-err').textContent = errosCometidos;
+}
+
+function calcNota(ok, total, cometidos){
+  const notaBase = total>0?(ok/total)*10:0;
+  const pen = Math.max(0, cometidos-ERROS_LIVRES_TOTAL);
+  const desc = Math.min(DESCONTO_MAXIMO, pen*DESCONTO_POR_ERRO);
+  return { notaBase, desconto:desc, notaFinal:Math.max(0,notaBase-desc), penalizaveis:pen };
+}
+
+// ══════ SALVAR ══════
+document.getElementById('btn-salvar').onclick = function(){
+  const f = FICHAS[fichaAtual];
+  let ok=0, total=0;
+  f.campos.forEach(c=>{
+    const el = document.getElementById('campo-'+c.key);
+    if(c.type==='text'){
+      const val=el.value; total+=c.valor.length;
+      for(let i=0;i<c.valor.length;i++) if(i<val.length&&val[i]===c.valor[i]) ok++;
+    }
+    el.disabled=true;
+  });
+  resultados.push({ label: f.nf.cliente+' / '+f.nf.veiculo, ok, total, erros: errosCometidos-errosAnteriores });
+  if(fichaAtual<FICHAS.length-1){ fichaAtual++; renderFicha(); }
+  else mostrarResultado();
+};
+
+// ══════ RESULTADO ══════
+function mostrarResultado(){
+  const okTotal = resultados.reduce((s,r)=>s+r.ok,0);
+  const {notaBase, desconto, notaFinal, penalizaveis} = calcNota(okTotal, TOTAL_CHARS, errosCometidos);
+  const nota = parseFloat(notaFinal.toFixed(1));
+  const precisao = Math.round((okTotal/TOTAL_CHARS)*100);
+  const cor = nota>=7?'#22c55e':nota>=5?'#f5a623':'#ef4444';
+  const conceito = nota>=9?'🏆 Excelente — Auxiliar administrativo nota 10!'
+                 : nota>=7?'😊 Bom — Pronto(a) para o mercado de trabalho!'
+                 : nota>=5?'😐 Regular — Atenção à precisão na digitação!'
+                          :'😟 Insuficiente — Revise com mais cuidado!';
+
+  document.getElementById('res-aluno').textContent = alunoNome;
+  document.getElementById('res-nota').textContent = nota.toFixed(1).replace('.',',');
+  document.getElementById('res-nota').style.color = cor;
+  document.getElementById('res-conceito').textContent = conceito;
+  document.getElementById('res-conceito').style.color = cor;
+  document.getElementById('rd-ok').textContent = okTotal;
+  document.getElementById('rd-ok-sub').textContent = `de ${TOTAL_CHARS} caracteres totais`;
+  document.getElementById('rd-prec').textContent = precisao+'%';
+  document.getElementById('rd-prec').style.color = cor;
+  document.getElementById('rd-err').textContent = errosCometidos;
+  document.getElementById('rd-err-sub').textContent = `${ERROS_LIVRES_TOTAL} primeiros não descontam`;
+  document.getElementById('rd-os').textContent = FICHAS.length;
+
+  document.getElementById('os-tbody').innerHTML = resultados.map(r=>{
+    const p=Math.round((r.ok/r.total)*100);
+    return `<tr><td>${r.label}</td><td>${p}%</td><td>${r.erros}</td></tr>`;
+  }).join('');
+
+  const dHtml = errosCometidos>ERROS_LIVRES_TOTAL
+    ? `Erros: <strong>${errosCometidos}</strong> (franquia: ${ERROS_LIVRES_TOTAL} → penalizáveis: <strong>${penalizaveis}</strong>)<br>
+       Desconto: ${penalizaveis} × ${DESCONTO_POR_ERRO.toFixed(2).replace('.',',')} = <strong>−${desconto.toFixed(1).replace('.',',')} pts</strong>${desconto>=DESCONTO_MAXIMO?' (máximo)':''}<br>`
+    : `Erros: <strong>${errosCometidos}</strong> — dentro da franquia de ${ERROS_LIVRES_TOTAL}. Sem desconto! 🎉<br>`;
+
+  document.getElementById('score-box').innerHTML =
+    `<strong>Como a nota foi calculada:</strong><br>
+     Nota base: ${okTotal} ÷ ${TOTAL_CHARS} × 10 = <strong>${notaBase.toFixed(1).replace('.',',')}</strong><br>
+     ${dHtml}
+     Nota final: <strong style="font-size:15px;color:var(--sys-accent)">${nota.toFixed(1).replace('.',',')} pontos</strong>`;
+
+  show('screen-resultado');
+}
+
+// ══════ RESTART ══════
+document.getElementById('btn-restart').onclick = function(){
+  alunoNome=''; fichaAtual=0; errosCometidos=0; resultados=[];
+  document.getElementById('input-nome').value='';
+  document.getElementById('btn-start').disabled=true;
+  show('screen-start');
+};
+</script>
+</body>
+</html>
